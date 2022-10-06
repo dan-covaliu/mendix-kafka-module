@@ -81,6 +81,10 @@ public class SendSynchronous extends CustomJavaAction<IMendixObject>
 		for (Header header : this.headers) {
 			producerRecord.headers().add(header.getKey(), header.getValue().getBytes());
 		}
+
+		if (kafkaProducer == null) {
+			throw new Exception("Unable to build a producer using the specified configuration settings");
+		}
 		
 		Future<RecordMetadata> future = kafkaProducer.send(producerRecord);
 		RecordMetadata record = future.get();
